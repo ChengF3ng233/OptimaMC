@@ -20,9 +20,9 @@ Some of these enhancements include : <br>
   - COMPLETELY removed anything relating to Demo, and Stream
   - Removing all snooper mechanics (0.0001% faster)
   - Reimplemented the Loading Bar on world creation because it was always there, it just needed some motivation to get working
+  - Updated LWJGL to version 3
 
 Some planned enhancements include :
-  - The use of LWJGLX
   - Fixing the scrollbar offseting in ```GuiNewChat```
   - Fix the player not rendering when looking in certain directions of below a certain Y-Level
   - Updating libraries
