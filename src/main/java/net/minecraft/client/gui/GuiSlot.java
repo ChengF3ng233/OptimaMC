@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 
+import java.awt.*;
 import java.util.function.Function;
 
 public abstract class GuiSlot {
@@ -445,42 +446,32 @@ public abstract class GuiSlot {
         return 220;
     }
 
-    protected void drawSelectionBox(int p_148120_1_, int p_148120_2_, int mouseXIn, int mouseYIn) {
-        int i = this.getSize();
+    protected void drawSelectionBox(int startX, int startY, int mouseXIn, int mouseYIn) {
+        int listSize = this.getSize();
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
-        for (int j = 0; j < i; ++j) {
-            int k = p_148120_2_ + j * this.slotHeight + this.headerPadding;
-            int l = this.slotHeight - 4;
+        for (int i = 0; i < listSize; ++i) {
+            int slotTop = startY + i * this.slotHeight + this.headerPadding;
+            int slotHeight = this.slotHeight - 4;
 
-            if (k > this.bottom || k + l < this.top) {
-                this.func_178040_a(j, p_148120_1_, k);
+            if (slotTop > this.bottom || slotTop + slotHeight < this.top) {
+                this.func_178040_a(i, startX, slotTop);
             }
 
-            if (this.showSelectionBox && this.isSelected(j)) {
-                int i1 = this.left + (this.width / 2 - this.getListWidth() / 2);
-                int j1 = this.left + this.width / 2 + this.getListWidth() / 2;
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                GlStateManager.disableTexture2D();
-                worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                worldrenderer.pos(i1, k + l + 2, 0.0D).tex(0.0D, 1.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos(j1, k + l + 2, 0.0D).tex(1.0D, 1.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos(j1, k - 2, 0.0D).tex(1.0D, 0.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos(i1, k - 2, 0.0D).tex(0.0D, 0.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos(i1 + 1, k + l + 1, 0.0D).tex(0.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-                worldrenderer.pos(j1 - 1, k + l + 1, 0.0D).tex(1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-                worldrenderer.pos(j1 - 1, k - 1, 0.0D).tex(1.0D, 0.0D).color(0, 0, 0, 255).endVertex();
-                worldrenderer.pos(i1 + 1, k - 1, 0.0D).tex(0.0D, 0.0D).color(0, 0, 0, 255).endVertex();
-                tessellator.draw();
-                GlStateManager.enableTexture2D();
+            if (this.showSelectionBox && this.isSelected(i)) {
+                int boxLeft = this.left + (this.width / 2 - this.getListWidth() / 2);
+                int boxRight = this.left + this.width / 2 + this.getListWidth() / 2;
+
+                Gui.drawRect(boxLeft, slotTop, boxRight, slotTop + slotHeight, new Color(200, 200, 200, 100).getRGB());
             }
 
-            if (!(this instanceof GuiResourcePackList) || k >= this.top - this.slotHeight && k <= this.bottom) {
-                this.drawSlot(j, p_148120_1_, k, l, mouseXIn, mouseYIn);
+            if (!(this instanceof GuiResourcePackList) || (slotTop >= this.top - this.slotHeight && slotTop <= this.bottom)) {
+                this.drawSlot(i, startX, slotTop, slotHeight, mouseXIn, mouseYIn);
             }
         }
     }
+
 
     protected int getScrollBarX() {
         return this.width / 2 + 124;

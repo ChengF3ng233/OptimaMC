@@ -2206,4 +2206,18 @@ public class Minecraft implements IThreadListener {
         map.put("X-Minecraft-Version", "1.8.9");
         return map;
     }
+
+    public List<IResourcePack> getResourcePacks() {
+        List<IResourcePack> list = Lists.newArrayList(this.defaultResourcePacks);
+
+        for (ResourcePackRepository.Entry resourcepackrepository$entry : this.mcResourcePackRepository.getRepositoryEntries()) {
+            list.add(resourcepackrepository$entry.getResourcePack());
+        }
+
+        if (this.mcResourcePackRepository.getResourcePackInstance() != null) {
+            list.add(this.mcResourcePackRepository.getResourcePackInstance());
+        }
+
+        return list;
+    }
 }

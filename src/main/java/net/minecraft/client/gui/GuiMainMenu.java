@@ -172,8 +172,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         }
 
         if (button.id == 5) {
-            this.mc.session = createSession("xtin8873@gmail.com", "3DigitDouble#");
-            //this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings, this.mc.getLanguageManager()));
+            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings, this.mc.getLanguageManager()));
         }
 
         if (button.id == 1) {

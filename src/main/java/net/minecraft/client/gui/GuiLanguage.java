@@ -7,6 +7,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Language;
 import net.minecraft.client.resources.LanguageManager;
 import net.minecraft.client.settings.GameSettings;
+import net.optifine.Lang;
 
 import java.io.IOException;
 import java.util.Map;
@@ -93,9 +94,11 @@ public class GuiLanguage extends GuiScreen {
             Language language = this.languageMap.get(this.langCodeList.get(slotIndex));
             GuiLanguage.this.languageManager.setCurrentLanguage(language);
             GuiLanguage.this.game_settings_3.language = language.getLanguageCode();
-            //TODO watch, Polished-Gui incorp
-            this.mc.refreshResources();
-            Minecraft.getMinecraft().getLanguageManager().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
+            GuiLanguage.this.languageManager.onResourceManagerReload(mc.getResourceManager());
+            GuiLanguage.this.languageManager.parseLanguageMetadata(mc.getResourcePacks());
+            Lang.resourcesReloaded();
+            mc.fontRendererObj.onResourceManagerReload(mc.getResourceManager());
+            mc.standardGalacticFontRenderer.onResourceManagerReload(mc.getResourceManager());
             GuiLanguage.this.fontRendererObj.setUnicodeFlag(GuiLanguage.this.languageManager.isCurrentLocaleUnicode() || GuiLanguage.this.game_settings_3.forceUnicodeFont);
             GuiLanguage.this.fontRendererObj.setBidiFlag(GuiLanguage.this.languageManager.isCurrentLanguageBidirectional());
             GuiLanguage.this.confirmSettingsBtn.displayString = I18n.format("gui.done");
@@ -117,7 +120,7 @@ public class GuiLanguage extends GuiScreen {
 
         protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn) {
             GuiLanguage.this.fontRendererObj.setBidiFlag(true);
-            GuiLanguage.this.drawCenteredString(GuiLanguage.this.fontRendererObj, this.languageMap.get(this.langCodeList.get(entryID)).toString(), this.width / 2, p_180791_3_ + 1, 16777215);
+            GuiLanguage.this.drawCenteredString(GuiLanguage.this.fontRendererObj, this.languageMap.get(this.langCodeList.get(entryID)).toString(), this.width / 2, p_180791_3_ + this.slotHeight / 2 - fontRendererObj.FONT_HEIGHT + 3, 16777215);
             GuiLanguage.this.fontRendererObj.setBidiFlag(GuiLanguage.this.languageManager.getCurrentLanguage().isBidirectional());
         }
     }

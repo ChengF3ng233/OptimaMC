@@ -55,6 +55,7 @@ public class ChunkRenderDispatcher {
             this.countRenderBuilders = p_i4_1_;
         }
 
+
         for (int k = 0; k < j; ++k) {
             ChunkRenderWorker chunkrenderworker = new ChunkRenderWorker(this);
             Thread thread = threadFactory.newThread(chunkrenderworker);
@@ -72,7 +73,7 @@ public class ChunkRenderDispatcher {
     }
 
     public String getDebugInfo() {
-        return String.format("pC: %03d, pU: %1d, aB: %1d", Integer.valueOf(this.queueChunkUpdates.size()), Integer.valueOf(this.queueChunkUploads.size()), Integer.valueOf(this.queueFreeRenderBuilders.size()));
+        return String.format("pC: %03d, pU: %1d, aB: %1d", this.queueChunkUpdates.size(), this.queueChunkUploads.size(), this.queueFreeRenderBuilders.size());
     }
 
     public boolean runChunkUploads(long p_178516_1_) {
