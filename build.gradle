@@ -13,20 +13,9 @@ repositories {
         url "https://nexus.velocitypowered.com/repository/maven-public/"
     }
 }
-project.ext.lwjglVersion = "3.3.6"
-project.ext.lwjglNatives = "natives-windows"
+
 dependencies {
-    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
-    implementation "org.lwjgl:lwjgl"
-    implementation "org.lwjgl:lwjgl-glfw"
-    implementation "org.lwjgl:lwjgl-openal"
-    implementation "org.lwjgl:lwjgl-opengl"
-    implementation "org.lwjgl:lwjgl-stb"
-    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.typesafe.akka:akka-actor_2.11:2.4.11.2'
     implementation 'com.paulscode:codecjorbis:20101023'
