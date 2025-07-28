@@ -110,9 +110,9 @@ public enum ModelRotation implements ITransformation
         return (ModelRotation)mapRotations.get(Integer.valueOf(combineXY(MathHelper.normalizeAngle(p_177524_0_, 360), MathHelper.normalizeAngle(p_177524_1_, 360))));
     }
 
-    public javax.vecmath.Matrix4f getMatrix()
+    public Matrix4f getMatrix()
     {
-        return new javax.vecmath.Matrix4f(this.getMatrix4d());
+        return new Matrix4f(this.getMatrix4d());
     }
 
     public EnumFacing rotate(EnumFacing p_rotate_1_)

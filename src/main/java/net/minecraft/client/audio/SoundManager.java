@@ -32,7 +32,7 @@ import paulscode.sound.SoundSystemException;
 import paulscode.sound.SoundSystemLogger;
 import paulscode.sound.Source;
 import paulscode.sound.codecs.CodecJOrbis;
-import paulscode.sound.libraries.LibraryLWJGLOpenAL;
+import paulscode.sound.libraries.LibraryJavaSound;
 
 public class SoundManager
 {
@@ -64,7 +64,7 @@ public class SoundManager
 
         try
         {
-            SoundSystemConfig.addLibrary(LibraryLWJGLOpenAL.class);
+            SoundSystemConfig.addLibrary(LibraryJavaSound.class);
             SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
         }
         catch (SoundSystemException soundsystemexception)

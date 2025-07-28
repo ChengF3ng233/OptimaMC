@@ -56,4 +56,5 @@ dependencies {
     implementation 'com.mojang:authlib:1.5.21'
     implementation 'io.netty:netty-all:4.0.23.Final'
     implementation 'com.mojang:netty:1.8.8'
+    implementation 'com.paulscode:libraryjavasound:20101123'
 }
