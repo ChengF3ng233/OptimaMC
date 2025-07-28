@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+}
+
+group = 'cn.feng'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+
+    maven {
+        name "Velocity"
+        url "https://nexus.velocitypowered.com/repository/maven-public/"
+    }
+}
+project.ext.lwjglVersion = "3.3.6"
+project.ext.lwjglNatives = "natives-windows"
+dependencies {
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-glfw"
+    implementation "org.lwjgl:lwjgl-openal"
+    implementation "org.lwjgl:lwjgl-opengl"
+    implementation "org.lwjgl:lwjgl-stb"
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+
+    implementation 'com.typesafe.akka:akka-actor_2.11:2.3.3'
+    implementation 'com.paulscode:codecjorbis:20101023'
+    implementation 'com.paulscode:codecwav:20101023'
+    implementation 'commons-codec:commons-codec:1.9'
+    implementation 'org.apache.commons:commons-compress:1.8.1'
+    implementation 'commons-io:commons-io:2.16.1'
+    implementation 'org.apache.commons:commons-lang3:3.3.2'
+    implementation 'commons-logging:commons-logging:1.1.3'
+    implementation 'com.google.guava:guava:17.0'
+    implementation 'com.ibm.icu:icu4j-core-mojang:51.2'
+    implementation 'net.sf.jopt-simple:jopt-simple:4.6'
+    implementation 'com.paulscode:libraryjavasound:20101123'
+    implementation 'org.apache.logging.log4j:log4j-api:2.0-beta9'
+    implementation 'org.apache.logging.log4j:log4j-core:2.0-beta9'
+    implementation 'org.scala-lang:scala-actors-migration_2.11:1.1.0'
+    implementation 'org.scala-lang:scala-compiler:2.11.1'
+    implementation 'org.scala-lang.plugins:scala-continuations-library_2.11:1.0.2'
+    implementation 'org.scala-lang.plugins:scala-continuations-plugin_2.11.1:1.0.2'
+    implementation 'org.scala-lang:scala-library:2.11.1'
+    implementation 'org.scala-lang.modules:scala-parser-combinators_2.11:1.0.1'
+    implementation 'org.scala-lang:scala-reflect:2.11.1'
+    implementation 'org.scala-lang.modules:scala-xml_2.11:1.0.2'
+    implementation 'com.paulscode:soundsystem:20120107'
+    implementation 'net.sf.trove4j:trove4j:3.0.3'
+    implementation 'javax.vecmath:vecmath:1.5.2'
+    implementation 'com.mojang:authlib:1.5.21'
+    implementation 'io.netty:netty-all:4.0.23.Final'
+    implementation 'com.mojang:netty:1.8.8'
+}
