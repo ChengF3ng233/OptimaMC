@@ -52,7 +52,6 @@ public class RenderChunk {
     public AxisAlignedBB boundingBox;
     private int frameIndex = -1;
     private boolean needsUpdate = true;
-    private final EnumMap<EnumFacing, BlockPos> mapEnumFacing = null;
     private final BlockPos[] positionOffsets16 = new BlockPos[EnumFacing.VALUES.length];
     public static final EnumWorldBlockLayer[] ENUM_WORLD_BLOCK_LAYERS = EnumWorldBlockLayer.values();
     private final EnumWorldBlockLayer[] blockLayersSingle = new EnumWorldBlockLayer[1];

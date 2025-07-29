@@ -41,7 +41,7 @@ public class BlockBed extends BlockDirectional {
             }
 
             if (worldIn.provider.canRespawnHere() && worldIn.getBiomeGenForCoords(pos) != BiomeGenBase.hell) {
-                if (state.getValue(OCCUPIED).booleanValue()) {
+                if (state.getValue(OCCUPIED)) {
                     EntityPlayer entityplayer = this.getPlayerInBed(worldIn, pos);
 
                     if (entityplayer != null) {
@@ -214,7 +214,7 @@ public class BlockBed extends BlockDirectional {
         if (state.getValue(PART) == BlockBed.EnumPartType.HEAD) {
             i |= 8;
 
-            if (state.getValue(OCCUPIED).booleanValue()) {
+            if (state.getValue(OCCUPIED)) {
                 i |= 4;
             }
         }

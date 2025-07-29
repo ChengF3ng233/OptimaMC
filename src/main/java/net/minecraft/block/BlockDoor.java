@@ -116,7 +116,7 @@ public class BlockDoor extends Block {
                 state = iblockstate.cycleProperty(OPEN);
                 worldIn.setBlockState(blockpos, state, 2);
                 worldIn.markBlockRangeForRenderUpdate(blockpos, pos);
-                worldIn.playAuxSFXAtEntity(playerIn, state.getValue(OPEN).booleanValue() ? 1003 : 1006, pos, 0);
+                worldIn.playAuxSFXAtEntity(playerIn, state.getValue(OPEN) ? 1003 : 1006, pos, 0);
                 return true;
             }
         }
@@ -129,7 +129,7 @@ public class BlockDoor extends Block {
             BlockPos blockpos = iblockstate.getValue(HALF) == BlockDoor.EnumDoorHalf.LOWER ? pos : pos.down();
             IBlockState iblockstate1 = pos == blockpos ? iblockstate : worldIn.getBlockState(blockpos);
 
-            if (iblockstate1.getBlock() == this && iblockstate1.getValue(OPEN).booleanValue() != open) {
+            if (iblockstate1.getBlock() == this && iblockstate1.getValue(OPEN) != open) {
                 worldIn.setBlockState(blockpos, iblockstate1.withProperty(OPEN, Boolean.valueOf(open)), 2);
                 worldIn.markBlockRangeForRenderUpdate(blockpos, pos);
                 worldIn.playAuxSFXAtEntity(null, open ? 1003 : 1006, pos, 0);
@@ -173,10 +173,10 @@ public class BlockDoor extends Block {
             } else {
                 boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos1);
 
-                if ((flag || neighborBlock.canProvidePower()) && neighborBlock != this && flag != iblockstate1.getValue(POWERED).booleanValue()) {
+                if ((flag || neighborBlock.canProvidePower()) && neighborBlock != this && flag != iblockstate1.getValue(POWERED)) {
                     worldIn.setBlockState(blockpos1, iblockstate1.withProperty(POWERED, Boolean.valueOf(flag)), 2);
 
-                    if (flag != state.getValue(OPEN).booleanValue()) {
+                    if (flag != state.getValue(OPEN)) {
                         worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
                         worldIn.markBlockRangeForRenderUpdate(pos, pos);
                         worldIn.playAuxSFXAtEntity(null, flag ? 1003 : 1006, pos, 0);
@@ -270,13 +270,13 @@ public class BlockDoor extends Block {
                 i |= 1;
             }
 
-            if (state.getValue(POWERED).booleanValue()) {
+            if (state.getValue(POWERED)) {
                 i |= 2;
             }
         } else {
             i = i | state.getValue(FACING).rotateY().getHorizontalIndex();
 
-            if (state.getValue(OPEN).booleanValue()) {
+            if (state.getValue(OPEN)) {
                 i |= 4;
             }
         }

@@ -288,7 +288,7 @@ public class DynamicLights {
                         Integer integer = mapItemLightLevels.get(item);
 
                         if (integer != null) {
-                            return integer.intValue();
+                            return integer;
                         }
                     }
 
@@ -319,7 +319,7 @@ public class DynamicLights {
                     Integer integer = mapEntityLightLevels.get(entity.getClass());
 
                     if (integer != null) {
-                        return integer.intValue();
+                        return integer;
                     }
                 }
 

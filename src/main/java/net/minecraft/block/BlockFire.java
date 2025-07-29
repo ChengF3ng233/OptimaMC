@@ -134,7 +134,7 @@ public class BlockFire extends Block {
             if (!flag && worldIn.isRaining() && this.canDie(worldIn, pos)) {
                 worldIn.setBlockToAir(pos);
             } else {
-                int i = state.getValue(AGE).intValue();
+                int i = state.getValue(AGE);
 
                 if (i < 15) {
                     state = state.withProperty(AGE, Integer.valueOf(i + rand.nextInt(3) / 2));
@@ -220,12 +220,12 @@ public class BlockFire extends Block {
 
     private int getFlammability(Block blockIn) {
         Integer integer = this.flammabilities.get(blockIn);
-        return integer == null ? 0 : integer.intValue();
+        return integer == null ? 0 : integer;
     }
 
     private int getEncouragement(Block blockIn) {
         Integer integer = this.encouragements.get(blockIn);
-        return integer == null ? 0 : integer.intValue();
+        return integer == null ? 0 : integer;
     }
 
     private void catchOnFire(World worldIn, BlockPos pos, int chance, Random random, int age) {
@@ -377,7 +377,7 @@ public class BlockFire extends Block {
     }
 
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(AGE).intValue();
+        return state.getValue(AGE);
     }
 
     protected BlockState createBlockState() {

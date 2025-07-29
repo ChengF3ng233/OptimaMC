@@ -55,13 +55,11 @@ public class WorldRenderer {
         SVertexBuilder.initVertexBuilder(this);
     }
 
-    private void growBuffer(int p_181670_1_) {
-        if (p_181670_1_ > this.rawIntBuffer.remaining()) {
+    private void growBuffer(int size) {
+        if (size > this.rawIntBuffer.remaining()) {
             int i = this.byteBuffer.capacity();
             int j = i % 2097152;
-            int k = j + (((this.rawIntBuffer.position() + p_181670_1_) * 4 - j) / 2097152 + 1) * 2097152;
-            //TODO logger
-            //LogManager.getLogger().warn("Needed to grow BufferBuilder buffer: Old size " + i + " bytes, new size " + k + " bytes.");
+            int k = j + (((this.rawIntBuffer.position() + size) * 4 - j) / 2097152 + 1) * 2097152;
             int l = this.rawIntBuffer.position();
             ByteBuffer bytebuffer = GLAllocation.createDirectByteBuffer(k);
             this.byteBuffer.position(0);
@@ -100,7 +98,7 @@ public class WorldRenderer {
 
         Arrays.sort(ainteger, new Comparator<Integer>() {
             public int compare(Integer p_compare_1_, Integer p_compare_2_) {
-                return Floats.compare(afloat[p_compare_2_.intValue()], afloat[p_compare_1_.intValue()]);
+                return Floats.compare(afloat[p_compare_2_], afloat[p_compare_1_]);
             }
         });
         BitSet bitset = new BitSet();
@@ -108,7 +106,7 @@ public class WorldRenderer {
         int[] aint = new int[l];
 
         for (int l1 = 0; (l1 = bitset.nextClearBit(l1)) < ainteger.length; ++l1) {
-            int i1 = ainteger[l1].intValue();
+            int i1 = ainteger[l1];
 
             if (i1 != l1) {
                 this.rawIntBuffer.limit(i1 * l + l);
@@ -116,7 +114,7 @@ public class WorldRenderer {
                 this.rawIntBuffer.get(aint);
                 int j1 = i1;
 
-                for (int k1 = ainteger[i1].intValue(); j1 != l1; k1 = ainteger[k1].intValue()) {
+                for (int k1 = ainteger[i1]; j1 != l1; k1 = ainteger[k1]) {
                     this.rawIntBuffer.limit(k1 * l + l);
                     this.rawIntBuffer.position(k1 * l);
                     IntBuffer intbuffer = this.rawIntBuffer.slice();
@@ -143,7 +141,7 @@ public class WorldRenderer {
             int i2 = this.vertexFormat.getNextOffset() / 4 * 4;
 
             for (int j2 = 0; j2 < ainteger.length; ++j2) {
-                int k2 = ainteger[j2].intValue();
+                int k2 = ainteger[j2];
                 atextureatlassprite[j2] = this.quadSprites[k2];
             }
 
@@ -176,8 +174,8 @@ public class WorldRenderer {
 
     private static float getDistanceSq(FloatBuffer p_181665_0_, float p_181665_1_, float p_181665_2_, float p_181665_3_, int p_181665_4_, int p_181665_5_) {
         float f = p_181665_0_.get(p_181665_5_);
-        float f1 = p_181665_0_.get(p_181665_5_ + 0 + 1);
-        float f2 = p_181665_0_.get(p_181665_5_ + 0 + 2);
+        float f1 = p_181665_0_.get(p_181665_5_ + 1);
+        float f2 = p_181665_0_.get(p_181665_5_ + 2);
         float f3 = p_181665_0_.get(p_181665_5_ + p_181665_4_);
         float f4 = p_181665_0_.get(p_181665_5_ + p_181665_4_ + 1);
         float f5 = p_181665_0_.get(p_181665_5_ + p_181665_4_ + 2);

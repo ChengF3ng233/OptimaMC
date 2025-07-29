@@ -69,7 +69,7 @@ public class BlockRedstoneWire extends Block {
 
     public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
         IBlockState iblockstate = worldIn.getBlockState(pos);
-        return iblockstate.getBlock() != this ? super.colorMultiplier(worldIn, pos, renderPass) : this.colorMultiplier(iblockstate.getValue(POWER).intValue());
+        return iblockstate.getBlock() != this ? super.colorMultiplier(worldIn, pos, renderPass) : this.colorMultiplier(iblockstate.getValue(POWER));
     }
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
@@ -90,7 +90,7 @@ public class BlockRedstoneWire extends Block {
 
     private IBlockState calculateCurrentChanges(World worldIn, BlockPos pos1, BlockPos pos2, IBlockState state) {
         IBlockState iblockstate = state;
-        int i = state.getValue(POWER).intValue();
+        int i = state.getValue(POWER);
         int j = 0;
         j = this.getMaxCurrentStrength(worldIn, pos2, j);
         this.canProvidePower = false;
@@ -213,7 +213,7 @@ public class BlockRedstoneWire extends Block {
         if (worldIn.getBlockState(pos).getBlock() != this) {
             return strength;
         } else {
-            int i = worldIn.getBlockState(pos).getValue(POWER).intValue();
+            int i = worldIn.getBlockState(pos).getValue(POWER);
             return i > strength ? i : strength;
         }
     }
@@ -241,7 +241,7 @@ public class BlockRedstoneWire extends Block {
         if (!this.canProvidePower) {
             return 0;
         } else {
-            int i = state.getValue(POWER).intValue();
+            int i = state.getValue(POWER);
 
             if (i == 0) {
                 return 0;
@@ -327,7 +327,7 @@ public class BlockRedstoneWire extends Block {
     }
 
     public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        int i = state.getValue(POWER).intValue();
+        int i = state.getValue(POWER);
 
         if (i != 0) {
             double d0 = (double) pos.getX() + 0.5D + ((double) rand.nextFloat() - 0.5D) * 0.2D;
@@ -354,7 +354,7 @@ public class BlockRedstoneWire extends Block {
     }
 
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(POWER).intValue();
+        return state.getValue(POWER);
     }
 
     protected BlockState createBlockState() {

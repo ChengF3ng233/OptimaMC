@@ -64,7 +64,7 @@ public class BlockRedstoneComparator extends BlockRedstoneDiode implements ITile
     }
 
     protected boolean isPowered(IBlockState state) {
-        return this.isRepeaterPowered || state.getValue(POWERED).booleanValue();
+        return this.isRepeaterPowered || state.getValue(POWERED);
     }
 
     protected int getActiveSignal(IBlockAccess worldIn, BlockPos pos, IBlockState state) {
@@ -214,7 +214,7 @@ public class BlockRedstoneComparator extends BlockRedstoneDiode implements ITile
         int i = 0;
         i = i | state.getValue(FACING).getHorizontalIndex();
 
-        if (state.getValue(POWERED).booleanValue()) {
+        if (state.getValue(POWERED)) {
             i |= 8;
         }
 

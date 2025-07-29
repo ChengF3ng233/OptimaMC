@@ -69,7 +69,7 @@ public class EnchantmentHelper {
         Iterator iterator = enchMap.keySet().iterator();
 
         while (iterator.hasNext()) {
-            int i = ((Integer) iterator.next()).intValue();
+            int i = (Integer) iterator.next();
             Enchantment enchantment = Enchantment.getEnchantmentById(i);
 
             if (enchantment != null) {
@@ -79,7 +79,7 @@ public class EnchantmentHelper {
                 nbttaglist.appendTag(nbttagcompound);
 
                 if (stack.getItem() == Items.enchanted_book) {
-                    Items.enchanted_book.addEnchantment(stack, new EnchantmentData(enchantment, enchMap.get(Integer.valueOf(i)).intValue()));
+                    Items.enchanted_book.addEnchantment(stack, new EnchantmentData(enchantment, enchMap.get(Integer.valueOf(i))));
                 }
             }
         }
@@ -307,7 +307,7 @@ public class EnchantmentHelper {
                             boolean flag = true;
 
                             for (EnchantmentData enchantmentdata1 : list) {
-                                if (!enchantmentdata1.enchantmentobj.canApplyTogether(Enchantment.getEnchantmentById(integer.intValue()))) {
+                                if (!enchantmentdata1.enchantmentobj.canApplyTogether(Enchantment.getEnchantmentById(integer))) {
                                     flag = false;
                                     break;
                                 }
