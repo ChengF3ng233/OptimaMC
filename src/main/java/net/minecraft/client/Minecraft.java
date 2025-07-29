@@ -11,6 +11,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import me.guichaguri.betterfps.BetterFpsClient;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -184,15 +185,11 @@ public class Minecraft implements IThreadListener {
     private final MinecraftSessionService sessionService;
     private SkinManager skinManager;
     private final Queue<FutureTask<?>> scheduledTasks = Queues.newArrayDeque();
-    private final long field_175615_aJ = 0L;
     private final Thread mcThread = Thread.currentThread();
     private ModelManager modelManager;
     private BlockRendererDispatcher blockRenderDispatcher;
     volatile boolean running = true;
     public String debug = "";
-    public boolean field_175613_B = false;
-    public boolean field_175614_C = false;
-    public boolean field_175611_D = false;
     public boolean renderChunksMany = true;
     long debugUpdateTime = getSystemTime();
     int fpsCounter;
@@ -241,40 +238,33 @@ public class Minecraft implements IThreadListener {
             return;
         }
 
-        while (true) {
-            try {
-                while (this.running) {
-                    if (!this.hasCrashed || this.crashReporter == null) {
-                        try {
-                            this.runGameLoop();
-                        } catch (OutOfMemoryError var10) {
-                            this.freeMemory();
-                            this.displayGuiScreen(new GuiMemoryErrorScreen());
-                            System.gc();
-                        }
-                    } else {
-                        this.displayCrashReport(this.crashReporter);
+        try {
+            while (this.running) {
+                if (!this.hasCrashed || this.crashReporter == null) {
+                    try {
+                        this.runGameLoop();
+                    } catch (OutOfMemoryError var10) {
+                        this.freeMemory();
+                        this.displayGuiScreen(new GuiMemoryErrorScreen());
+                        System.gc();
                     }
+                } else {
+                    this.displayCrashReport(this.crashReporter);
                 }
-            } catch (MinecraftError var12) {
-                break;
-            } catch (ReportedException reportedexception) {
-                this.addGraphicsAndWorldToCrashReport(reportedexception.getCrashReport());
-                this.freeMemory();
-                logger.fatal("Reported exception thrown!", reportedexception);
-                this.displayCrashReport(reportedexception.getCrashReport());
-                break;
-            } catch (Throwable throwable1) {
-                CrashReport crashreport1 = this.addGraphicsAndWorldToCrashReport(new CrashReport("Unexpected error", throwable1));
-                this.freeMemory();
-                logger.fatal("Unreported exception thrown!", throwable1);
-                this.displayCrashReport(crashreport1);
-                break;
-            } finally {
-                this.shutdownMinecraftApplet();
             }
-
-            return;
+        } catch (MinecraftError var12) {
+        } catch (ReportedException reportedexception) {
+            this.addGraphicsAndWorldToCrashReport(reportedexception.getCrashReport());
+            this.freeMemory();
+            logger.fatal("Reported exception thrown!", reportedexception);
+            this.displayCrashReport(reportedexception.getCrashReport());
+        } catch (Throwable throwable1) {
+            CrashReport crashreport1 = this.addGraphicsAndWorldToCrashReport(new CrashReport("Unexpected error", throwable1));
+            this.freeMemory();
+            logger.fatal("Unreported exception thrown!", throwable1);
+            this.displayCrashReport(crashreport1);
+        } finally {
+            this.shutdownMinecraftApplet();
         }
     }
 
@@ -389,6 +379,8 @@ public class Minecraft implements IThreadListener {
         }
 
         this.renderGlobal.makeEntityOutlineShader();
+
+        BetterFpsClient.start();
     }
 
     private void registerMetadataSerializers() {
@@ -402,7 +394,6 @@ public class Minecraft implements IThreadListener {
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
         Display.setTitle("Minecraft 1.8.9");
-
         Display.create((new PixelFormat()).withDepthBits(24));
     }
 

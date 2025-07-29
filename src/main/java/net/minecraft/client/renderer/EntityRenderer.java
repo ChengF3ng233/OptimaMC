@@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
+import me.guichaguri.betterfps.BetterFpsConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -1879,7 +1880,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue, 0.0F);
     }
 
-    private void setupFog(int startCoords, float partialTicks) {
+    protected void setupFog(int startCoords, float partialTicks) {
+        if (!BetterFpsConfig.getConfig().fog) return;
+
         this.fogStandard = false;
         Entity entity = this.mc.getRenderViewEntity();
         boolean flag = false;

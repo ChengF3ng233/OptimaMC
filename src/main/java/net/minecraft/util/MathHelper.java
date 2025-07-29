@@ -1,5 +1,7 @@
 package net.minecraft.util;
 
+import me.guichaguri.betterfps.BetterFpsConfig;
+import me.guichaguri.betterfps.math.*;
 import net.optifine.util.MathUtils;
 
 import java.util.Random;
@@ -24,11 +26,29 @@ public class MathHelper {
     private static final double[] field_181164_e;
     private static final double[] field_181165_f;
 
-    public static float sin(float p_76126_0_) {
-        return fastMath ? SIN_TABLE_FAST[(int) (p_76126_0_ * radToIndex) & 4095] : SIN_TABLE[(int) (p_76126_0_ * 10430.378F) & 65535];
+    public static float sin(float rad) {
+        switch (BetterFpsConfig.getConfig().algorithm) {
+            case "rivens": return RivensMath.sin(rad);
+            case "taylors": return TaylorMath.sin(rad);
+            case "libgdx": return LibGDXMath.sin(rad);
+            case "rivens-full": return RivensFullMath.sin(rad);
+            case "rivens-half": return RivensHalfMath.sin(rad);
+            case "java": return JavaMath.sin(rad);
+            case "random": return RandomMath.sin(rad);
+        }
+        return fastMath ? SIN_TABLE_FAST[(int) (rad * radToIndex) & 4095] : SIN_TABLE[(int) (rad * 10430.378F) & 65535];
     }
 
     public static float cos(float value) {
+        switch (BetterFpsConfig.getConfig().algorithm) {
+            case "rivens": return RivensMath.cos(value);
+            case "taylors": return TaylorMath.cos(value);
+            case "libgdx": return LibGDXMath.cos(value);
+            case "rivens-full": return RivensFullMath.cos(value);
+            case "rivens-half": return RivensHalfMath.cos(value);
+            case "java": return JavaMath.cos(value);
+            case "random": return RandomMath.cos(value);
+        }
         return fastMath ? SIN_TABLE_FAST[(int) (value * radToIndex + 1024.0F) & 4095] : SIN_TABLE[(int) (value * 10430.378F + 16384.0F) & 65535];
     }
 

@@ -1,5 +1,6 @@
 package net.minecraft.entity.item;
 
+import me.guichaguri.betterfps.BetterFps;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +43,8 @@ public class EntityTNTPrimed extends Entity {
     }
 
     public void onUpdate() {
+        if (BetterFps.TNT_TICKS++ > BetterFps.MAX_TNT_TICKS) return;
+
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;

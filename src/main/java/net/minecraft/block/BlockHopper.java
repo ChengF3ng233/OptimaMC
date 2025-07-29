@@ -108,6 +108,11 @@ public class BlockHopper extends BlockContainer {
 
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
         this.updateState(worldIn, pos, state);
+        TileEntity te = worldIn.getTileEntity(pos);
+        if(te != null) {
+            TileEntityHopper hopper = (TileEntityHopper)te;
+            hopper.checkBlockOnTop();
+        }
     }
 
     private void updateState(World worldIn, BlockPos pos, IBlockState state) {

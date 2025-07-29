@@ -3,6 +3,7 @@ package net.minecraft.world;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import me.guichaguri.betterfps.BetterFps;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1779,6 +1780,7 @@ public abstract class World implements IBlockAccess {
 
     public void tick() {
         this.updateWeather();
+        BetterFps.worldTick();
     }
 
     protected void calculateInitialWeather() {
@@ -1871,7 +1873,7 @@ public abstract class World implements IBlockAccess {
 
             for (int i1 = -l; i1 <= l; ++i1) {
                 for (int j1 = -l; j1 <= l; ++j1) {
-                    this.activeChunkSet.add(new ChunkCoordIntPair(i1 + j, j1 + k));
+                    this.activeChunkSet.add(new ChunkCoordIntPair(i1 + j, j1 + k, BetterFps.isTickable(i1 + j, j1 + k)));
                 }
             }
         }

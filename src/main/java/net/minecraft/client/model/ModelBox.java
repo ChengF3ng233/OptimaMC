@@ -1,6 +1,8 @@
 package net.minecraft.client.model;
 
+import me.guichaguri.betterfps.BetterFpsConfig;
 import net.minecraft.client.renderer.WorldRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class ModelBox {
     private final PositionTextureVertex[] vertexPositions;
@@ -132,12 +134,21 @@ public class ModelBox {
     }
 
     public void render(WorldRenderer renderer, float scale) {
+        boolean doFastRender = !GL11.glIsEnabled(GL11.GL_CULL_FACE) && BetterFpsConfig.getConfig().fastBoxRender;
+        if (doFastRender) {
+            GL11.glEnable(GL11.GL_CULL_FACE);
+        }
+
         for (int i = 0; i < this.quadList.length; ++i) {
             TexturedQuad texturedquad = this.quadList[i];
 
             if (texturedquad != null) {
                 texturedquad.draw(renderer, scale);
             }
+        }
+
+        if (doFastRender) {
+            GL11.glDisable(GL11.GL_CULL_FACE);
         }
     }
 

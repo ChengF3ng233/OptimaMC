@@ -5,11 +5,18 @@ import net.minecraft.util.BlockPos;
 public class ChunkCoordIntPair {
     public final int chunkXPos;
     public final int chunkZPos;
+    public boolean isTickable;
     private int cachedHashCode = 0;
 
     public ChunkCoordIntPair(int x, int z) {
         this.chunkXPos = x;
         this.chunkZPos = z;
+    }
+
+    public ChunkCoordIntPair(int chunkXPos, int chunkZPos, boolean isTickable) {
+        this.chunkXPos = chunkXPos;
+        this.chunkZPos = chunkZPos;
+        this.isTickable = isTickable;
     }
 
     public static long chunkXZ2Int(int x, int z) {

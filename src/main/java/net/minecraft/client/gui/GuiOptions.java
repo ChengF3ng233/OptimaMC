@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import me.guichaguri.betterfps.gui.GuiBetterFpsConfig;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.audio.SoundEventAccessorComposite;
@@ -75,6 +76,7 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback {
         this.buttonList.add(new GuiButton(102, this.width / 2 + 5, this.height / 6 + 72 - 6, 150, 20, I18n.format("options.language")));
         this.buttonList.add(new GuiButton(103, this.width / 2 + 5, this.height / 6 + 120 - 6, 150, 20, I18n.format("options.chat.title")));
         this.buttonList.add(new GuiButton(105, this.width / 2 - 155, this.height / 6 + 120 - 6, 150, 20, I18n.format("options.resourcepack")));
+        this.buttonList.add(new GuiButton(114514, this.width / 2 - 155, this.height / 6 + 144 - 6, 150, 20, "BetterFPS Options"));
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.format("gui.done")));
     }
 
@@ -99,6 +101,10 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback {
 
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.enabled) {
+            if (button.id == 114514) {
+                mc.displayGuiScreen(new GuiBetterFpsConfig(this));
+            }
+
             if (button.id < 100 && button instanceof GuiOptionButton) {
                 GameSettings.Options gamesettings$options = ((GuiOptionButton) button).returnEnumOptions();
                 this.game_settings_1.setOptionValue(gamesettings$options, 1);

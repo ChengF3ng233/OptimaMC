@@ -1460,37 +1460,36 @@ public class Config {
 
     public static void checkDisplaySettings() {
         int i = getAntialiasingLevel();
+        if (i <= 0) return;
 
-        if (i > 0) {
-            DisplayMode displaymode = Display.getDisplayMode();
-            dbg("FSAA Samples: " + i);
+        DisplayMode displaymode = Display.getDisplayMode();
+        dbg("FSAA Samples: " + i);
 
-            Display.destroy();
-            Display.setDisplayMode(displaymode);
-            Display.create((new PixelFormat()).withDepthBits(24).withSamples(i));
+        Display.destroy();
+        Display.setDisplayMode(displaymode);
+        Display.create((new PixelFormat()).withDepthBits(24).withSamples(i));
 
-            if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                Display.setResizable(false);
-                Display.setResizable(true);
-            }
+        if (Util.getOSType() == Util.EnumOS.WINDOWS) {
+            Display.setResizable(false);
+            Display.setResizable(true);
+        }
 
-            if (!Minecraft.isRunningOnMac && getDefaultResourcePack() != null) {
-                InputStream inputstream = null;
-                InputStream inputstream1 = null;
+        if (!Minecraft.isRunningOnMac && getDefaultResourcePack() != null) {
+            InputStream icon16 = null;
+            InputStream icon32 = null;
 
-                try {
-                    inputstream = getDefaultResourcePack().getInputStreamAssets(new ResourceLocation("icons/icon_16x16.png"));
-                    inputstream1 = getDefaultResourcePack().getInputStreamAssets(new ResourceLocation("icons/icon_32x32.png"));
+            try {
+                icon16 = getDefaultResourcePack().getInputStreamAssets(new ResourceLocation("icons/icon_16x16.png"));
+                icon32 = getDefaultResourcePack().getInputStreamAssets(new ResourceLocation("icons/icon_32x32.png"));
 
-                    if (inputstream != null && inputstream1 != null) {
-                        Display.setIcon(new ByteBuffer[]{readIconImage(inputstream), readIconImage(inputstream1)});
-                    }
-                } catch (IOException ioexception) {
-                    warn("Error setting window icon: " + ioexception.getClass().getName() + ": " + ioexception.getMessage());
-                } finally {
-                    IOUtils.closeQuietly(inputstream);
-                    IOUtils.closeQuietly(inputstream1);
+                if (icon16 != null && icon32 != null) {
+                    Display.setIcon(new ByteBuffer[]{readIconImage(icon16), readIconImage(icon32)});
                 }
+            } catch (IOException ioexception) {
+                warn("Error setting window icon: " + ioexception.getClass().getName() + ": " + ioexception.getMessage());
+            } finally {
+                IOUtils.closeQuietly(icon16);
+                IOUtils.closeQuietly(icon32);
             }
         }
     }

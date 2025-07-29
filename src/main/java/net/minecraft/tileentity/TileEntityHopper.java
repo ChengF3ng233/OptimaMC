@@ -1,5 +1,6 @@
 package net.minecraft.tileentity;
 
+import me.guichaguri.betterfps.BetterFpsConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockHopper;
@@ -23,6 +24,17 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
     private ItemStack[] inventory = new ItemStack[5];
     private String customName;
     private int transferCooldown = -1;
+
+    public IInventory topInventory = null;
+    public int topBlockUpdate = 1;
+    public boolean canPickupDrops = true;
+    public boolean isOnTransferCooldown = false;
+
+    public void checkBlockOnTop() {
+        BlockPos topPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
+        canPickupDrops = !worldObj.getBlockState(topPos).getBlock().isOpaqueCube();
+        topInventory = getHopperInventory(this);
+    }
 
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
@@ -147,12 +159,22 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
     }
 
     public void update() {
+        boolean fastHopper = BetterFpsConfig.getConfig().fastHopper;
         if (this.worldObj != null && !this.worldObj.isRemote) {
             --this.transferCooldown;
+            if (fastHopper)
+                isOnTransferCooldown = transferCooldown > 0;
 
             if (!this.isOnTransferCooldown()) {
-                this.setTransferCooldown(0);
+                this.setTransferCooldown(fastHopper? 2 : 0);
                 this.updateHopper();
+
+                if (fastHopper) {
+                    if(topBlockUpdate-- <= 0) {
+                        checkBlockOnTop();
+                        topBlockUpdate = 120;
+                    }
+                }
             }
         }
     }
@@ -283,42 +305,79 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
         return true;
     }
 
-    public static boolean captureDroppedItems(IHopper p_145891_0_) {
-        IInventory iinventory = getHopperInventory(p_145891_0_);
+    public static boolean captureDroppedItems(IHopper hopper) {
+        if (BetterFpsConfig.getConfig().fastHopper) {
+            // This is to keep the same functionality in the Minecart with Hopper and other custom modded hoppers
+            TileEntityHopper hopperTE = hopper instanceof TileEntityHopper ? (TileEntityHopper) hopper : null;
 
-        if (iinventory != null) {
-            EnumFacing enumfacing = EnumFacing.DOWN;
+            IInventory iinventory = hopperTE == null ? getHopperInventory(hopper) : hopperTE.topInventory;
 
-            if (isInventoryEmpty(iinventory, enumfacing)) {
-                return false;
+            if (iinventory != null) {
+                EnumFacing enumfacing = EnumFacing.DOWN;
+
+                if (isInventoryEmpty(iinventory, enumfacing)) return false;
+
+                if (iinventory instanceof ISidedInventory) {
+                    ISidedInventory isidedinventory = (ISidedInventory) iinventory;
+                    int[] aint = isidedinventory.getSlotsForFace(enumfacing);
+
+                    for (int i = 0; i < aint.length; ++i) {
+                        if (pullItemFromSlot(hopper, iinventory, aint[i], enumfacing)) return true;
+                    }
+                } else {
+                    int j = iinventory.getSizeInventory();
+
+                    for (int k = 0; k < j; ++k) {
+                        if (pullItemFromSlot(hopper, iinventory, k, enumfacing)) return true;
+                    }
+                }
+            } else if (hopperTE == null || hopperTE.canPickupDrops) {
+
+                for (EntityItem entityitem : func_181556_a(hopper.getWorld(), hopper.getXPos(), hopper.getYPos() + 1.0D, hopper.getZPos())) {
+                    if (putDropInInventoryAllSlots(hopper, entityitem)) {
+                        return true;
+                    }
+                }
+
             }
 
-            if (iinventory instanceof ISidedInventory) {
-                ISidedInventory isidedinventory = (ISidedInventory) iinventory;
-                int[] aint = isidedinventory.getSlotsForFace(enumfacing);
+        } else {
+            IInventory iinventory = getHopperInventory(hopper);
 
-                for (int i = 0; i < aint.length; ++i) {
-                    if (pullItemFromSlot(p_145891_0_, iinventory, aint[i], enumfacing)) {
-                        return true;
+            if (iinventory != null) {
+                EnumFacing enumfacing = EnumFacing.DOWN;
+
+                if (isInventoryEmpty(iinventory, enumfacing)) {
+                    return false;
+                }
+
+                if (iinventory instanceof ISidedInventory) {
+                    ISidedInventory isidedinventory = (ISidedInventory) iinventory;
+                    int[] aint = isidedinventory.getSlotsForFace(enumfacing);
+
+                    for (int i = 0; i < aint.length; ++i) {
+                        if (pullItemFromSlot(hopper, iinventory, aint[i], enumfacing)) {
+                            return true;
+                        }
+                    }
+                } else {
+                    int j = iinventory.getSizeInventory();
+
+                    for (int k = 0; k < j; ++k) {
+                        if (pullItemFromSlot(hopper, iinventory, k, enumfacing)) {
+                            return true;
+                        }
                     }
                 }
             } else {
-                int j = iinventory.getSizeInventory();
-
-                for (int k = 0; k < j; ++k) {
-                    if (pullItemFromSlot(p_145891_0_, iinventory, k, enumfacing)) {
+                for (EntityItem entityitem : func_181556_a(hopper.getWorld(), hopper.getXPos(), hopper.getYPos() + 1.0D, hopper.getZPos())) {
+                    if (putDropInInventoryAllSlots(hopper, entityitem)) {
                         return true;
                     }
                 }
             }
-        } else {
-            for (EntityItem entityitem : func_181556_a(p_145891_0_.getWorld(), p_145891_0_.getXPos(), p_145891_0_.getYPos() + 1.0D, p_145891_0_.getZPos())) {
-                if (putDropInInventoryAllSlots(p_145891_0_, entityitem)) {
-                    return true;
-                }
-            }
-        }
 
+        }
         return false;
     }
 
@@ -492,7 +551,7 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
     }
 
     public boolean isOnTransferCooldown() {
-        return this.transferCooldown > 0;
+        return BetterFpsConfig.getConfig().fastHopper? isOnTransferCooldown : this.transferCooldown > 0;
     }
 
     public boolean mayTransfer() {

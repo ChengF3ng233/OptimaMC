@@ -12,10 +12,14 @@ repositories {
         name "Velocity"
         url "https://nexus.velocitypowered.com/repository/maven-public/"
     }
+
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: "libs", includes: ["*.jar"])
 
     implementation 'com.typesafe.akka:akka-actor_2.11:2.4.11.2'
     implementation 'com.paulscode:codecjorbis:20101023'
