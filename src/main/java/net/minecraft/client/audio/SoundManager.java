@@ -3,6 +3,7 @@ package net.minecraft.client.audio;
 import com.google.common.collect.*;
 import io.netty.util.internal.ThreadLocalRandom;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.lwjgl3audio.LibraryLWJGL3OpenAL;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -53,7 +54,7 @@ public class SoundManager {
         this.options = p_i45119_2_;
 
         try {
-            SoundSystemConfig.addLibrary(LibraryJavaSound.class);
+            SoundSystemConfig.addLibrary(LibraryLWJGL3OpenAL.class);
             SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
         } catch (SoundSystemException soundsystemexception) {
             logger.error(LOG_MARKER, "Error linking with the LibraryJavaSound plug-in", soundsystemexception);
